@@ -1,0 +1,60 @@
+#row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+#column {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 100%;
+    flex: 1;
+}
+
+#item {
+    background: blanchedalmond;
+    padding: 2em;
+    margin: 1em;
+}
+
+#item>p {
+    width: 20em;
+}
+
+#item>img {
+    width: 10em;
+    height: 10em;
+}
+
+.header {
+    display: flex;
+    background: black;
+    padding: 1em;
+}
+
+.header>h1 {
+    color: white;
+}
+
+.footer {
+    background: black;
+    padding: 1em;
+    text-align: center;
+}
+
+.footer>p {
+    color: aliceblue;
+}
+
+.main-nav {
+    padding: 1em;
+    display: flex;
+    align-items: center;
+}
+
+.main-nav>a {
+    text-decoration: none;
+    background: white;
+    padding: 1em;
+    border-bottom-color: black;
+}
