@@ -4,10 +4,9 @@
     flex-wrap: wrap;
 }
 
-#column {
+#col {
     display: flex;
     flex-direction: column;
-    flex-basis: 100%;
     flex: 1;
 }
 
@@ -22,8 +21,8 @@
 }
 
 #item>img {
-    width: 10em;
-    height: 10em;
+    width: 100%;
+    height: 200px;
 }
 
 .header {
