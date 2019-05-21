@@ -1,18 +1,3 @@
-const Component = {
-    render: ({ tag, attr, child }) => {
-        _tag = tag == undefined ? `div` : `${tag}`;
-        // Inner Child of tag
-        _child = child == undefined ? `` : `${child}`;
-        // Basic attributes of tag
-        _attr = ``;
-        for (prop in attr) {
-            _attr += ` ${prop}='${attr[prop]}' `;
-        }
-        // Final render of HTML
-        return `<${_tag} ${_attr}>${_child}</${_tag}> `;
-    }
-}
-const API_KEY = "Tz932UboR9er74b7svXEKKFNZu72";
 
 let mactches_heading = Component.render({ tag: 'h1', attr: { style: 'margin-left:1em', id: 'mhd' }, child: "Loading..." });
 let head_row = Component.render({ attr: { id: 'row' }, child: mactches_heading });
@@ -20,12 +5,12 @@ let head_row = Component.render({ attr: { id: 'row' }, child: mactches_heading }
 document.getElementById("section").innerHTML = head_row;
 let matches, rows = ``;
 
-fetch(`https://cricapi.com/api/matches?apikey=${API_KEY}`)
+fetch(`${BASE_URL}/matches?apikey=${API_KEY}`)
     .then(res => res.json())
     .then((res) => {
         matches = res['matches'];
         displayMatches(matches.slice(0, 3));
-    }).catch(() => {
+    }).catch((err) => {
         document.getElementById('mhd').innerHTML = "Oops! An Error Occured while fetching data.";
     });
 
@@ -33,7 +18,7 @@ let allMatches = () => {
     displayMatches(matches, refresh = true);
 }
 
-let displayMatches = (_matches = matches) => {
+let displayMatches = (_matches = matches, refresh = false) => {
     let cols = ``;
     for ({ unique_id, date, matchStarted, ...teams } of _matches) {
         let vs = Component.render({ tag: 'p', attr: { id: 'match-' + unique_id }, child: `Teams : ${teams['team-1']} vs ${teams['team-2']}` });
@@ -53,15 +38,12 @@ let displayMatches = (_matches = matches) => {
 }
 
 async function fetchPlayer(PID) {
-    return await fetch(`https://cricapi.com/api/playerStats?pid=${PID}&apikey=${API_KEY}`)
+    return await fetch(`${BASE_URL}/playerStats?pid=${PID}&apikey=${API_KEY}`)
         .then(res => res.json())
         .then((res) => renderPlayer(res)).catch(() => {
             document.getElementById('mhd').innerHTML = "Oops! An Error Occured while fetching data.";
         });
 };
-const SACHIN_PID = 35320;
-const VIRAT_PID = 253802;
-const HPANDYA_PID = 625371;
 let sachin = ``, virat = ``, hpandya = ``;
 const getAllPlayers = async () => {
     sachin = await fetchPlayer(SACHIN_PID);
