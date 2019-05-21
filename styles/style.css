@@ -6,23 +6,51 @@
 
 #col {
     display: flex;
+    flex-wrap: wrap;
     flex-direction: column;
-    flex: 1;
+}
+
+#imgPlayer {
+    width: auto !important;
 }
 
 #item {
     background: blanchedalmond;
     padding: 2em;
     margin: 1em;
+    width: 500px;
+    flex: 1;
+}
+
+#strd {
+    background: green;
+    padding: 1em;
+    width: max-content !important;
+    color: white;
+}
+
+#nstrd {
+    background: red;
+    padding: 1em;
+    width: max-content !important;
+    color: white;
 }
 
 #item>p {
-    width: 20em;
+    text-align: justify;
 }
 
 #item>img {
     width: 100%;
-    height: 200px;
+    height: 250px;
+}
+
+#more-btn {
+    background: rebeccapurple;
+    padding: 1em;
+    color: white;
+    height: 100px;
+    align-self: center;
 }
 
 .header {

@@ -8,37 +8,81 @@ const Component = {
         for (prop in attr) {
             _attr += ` ${prop}='${attr[prop]}' `;
         }
-        //Final render of HTML
-        return `<${_tag} ${_attr}>${_child}</${_tag}> `
+        // Final render of HTML
+        return `<${_tag} ${_attr}>${_child}</${_tag}> `;
     }
 }
+const API_KEY = "Tz932UboR9er74b7svXEKKFNZu72";
 
-let all_news = ["India and England my joint second-favourites for World Cup: Gautam Gambhir", "Retired Dwayne Bravo Included In Windies Reserves For World Cup 2019", "Ravichandran Ashwin Set To Play For Nottinghamshire"]
+let mactches_heading = Component.render({ tag: 'h1', attr: { style: 'margin-left:1em', id: 'mhd' }, child: "Loading..." });
+let head_row = Component.render({ attr: { id: 'row' }, child: mactches_heading });
 
-let news1 = Component.render({ tag: `p`, attr: { id: `msg` }, child: all_news[0] });
-let news2 = Component.render({ tag: 'p', attr: { id: `msg` }, child: all_news[1] });
-let news3 = Component.render({ tag: 'p', attr: { id: `msg` }, child: all_news[2] });
+document.getElementById("section").innerHTML = head_row;
+let matches, rows = ``;
 
-let img1 = Component.render({ tag: 'img', attr: { src: './assets/news-1.jpg' } })
-let img2 = Component.render({ tag: 'img', attr: { src: './assets/news-2.jpg' } })
-let img3 = Component.render({ tag: 'img', attr: { src: './assets/news-3.jpg' } })
+fetch(`https://cricapi.com/api/matches?apikey=${API_KEY}`)
+    .then(res => res.json())
+    .then((res) => {
+        matches = res['matches'];
+        displayMatches(matches.slice(0, 3));
+    }).catch(() => {
+        document.getElementById('mhd').innerHTML = "Oops! An Error Occured while fetching data.";
+    });
 
-let button = Component.render({ tag: 'button', attr: { onClick: `alert("To Be added soon");` }, child: 'Read More' })
+let allMatches = () => {
+    displayMatches(matches, refresh = true);
+}
 
-let option1 = Component.render({ tag: 'option', attr: { value: 'Kholi' }, child: 'Kholi' });
-let option2 = Component.render({ tag: 'option', attr: { value: 'Dhoni' }, child: 'Dhoni' });
-let option3 = Component.render({ tag: 'option', attr: { value: 'Jadeja' }, child: 'Jadeja' });
-let option4 = Component.render({ tag: 'option', attr: { value: 'Dhawan' }, child: 'Dhawan' });
-let select = Component.render({ tag: 'select', attr: { name: 'team' }, child: option1 + option2 + option3 + option4 });
+let displayMatches = (_matches = matches) => {
+    let cols = ``;
+    for ({ unique_id, date, matchStarted, ...teams } of _matches) {
+        let vs = Component.render({ tag: 'p', attr: { id: 'match-' + unique_id }, child: `Teams : ${teams['team-1']} vs ${teams['team-2']}` });
+        let jsdate = new Date(date);
+        let rdate = Component.render({ tag: 'p', attr: { id: 'date-' + unique_id }, child: "Scheduled Date : " + jsdate.toLocaleDateString() });
+        let started = Component.render({ tag: 'p', attr: { id: (matchStarted ? "strd" : "nstrd") }, child: (matchStarted ? "Started" : "Not Started") });
 
-let item1 = Component.render({ attr: { id: 'item' }, child: img1 + news1 + select + button })
-let item2 = Component.render({ attr: { id: 'item' }, child: img2 + news2 + button })
-let item3 = Component.render({ attr: { id: 'item' }, child: img3 + news3 + button })
+        let item = Component.render({ attr: { id: 'item' }, child: vs + rdate + started });
+        let col = Component.render({ attr: { id: 'col' }, child: item });
+        cols += col;
+    }
+    let morebtn = Component.render({ tag: 'button', attr: { id: 'more-btn', onclick: "allMatches()", value: "More" }, child: "More" });
+    let row = Component.render({ attr: { id: 'row' }, child: cols + (_matches.length == 3 ? morebtn : '') });
+    head_row = head_row.replace("Loading...", "Upcoming Matches");
+    rows += head_row + row;
+    document.getElementById('section').innerHTML = refresh ? head_row + row : rows;
+}
 
-let col1 = Component.render({ attr: { id: 'col' }, child: item1 })
-let col2 = Component.render({ attr: { id: 'col' }, child: item2 })
-let col3 = Component.render({ attr: { id: 'col' }, child: item3 })
+async function fetchPlayer(PID) {
+    return await fetch(`http://cricapi.com/api/playerStats?pid=${PID}&apikey=${API_KEY}`)
+        .then(res => res.json())
+        .then((res) => renderPlayer(res)).catch(() => {
+            document.getElementById('mhd').innerHTML = "Oops! An Error Occured while fetching data.";
+        });
+};
+const SACHIN_PID = 35320;
+const VIRAT_PID = 253802;
+const HPANDYA_PID = 625371;
+let sachin = ``, virat = ``, hpandya = ``;
+const getAllPlayers = async () => {
+    sachin = await fetchPlayer(SACHIN_PID);
+    virat = await fetchPlayer(VIRAT_PID);
+    hpandya = await fetchPlayer(HPANDYA_PID);
+    return sachin + virat + hpandya;
+}
+let renderPlayer = ({ pid, imageURL, fullName, born, playingRole, profile, country }) => {
+    let img = Component.render({ tag: "img", attr: { id: 'imgPlayer', src: imageURL } });
+    let name = Component.render({ tag: "h1", attr: { id: "name-" + pid }, child: fullName });
+    let info = Component.render({ tag: "p", attr: { id: "info-" + pid }, child: profile });
+    let pr = Component.render({ tag: "p", attr: { id: "pr-" + pid }, child: playingRole });
+    let bday = Component.render({ tag: "p", attr: { id: "bday-" + pid }, child: born });
+    let land = Component.render({ tag: "p", attr: { id: "land-" + pid }, child: country });
+    let item = Component.render({ tag: "item", attr: { id: "item" }, child: img + name + pr + bday + land + info });
+    return item;
+}
 
-let row = Component.render({ attr: { id: 'row' }, child: col1 + col2 + col3 })
-
-document.getElementById("section").innerHTML = row;
+let players_heading = Component.render({ tag: 'h1', attr: { style: 'margin-left:1em', id: 'phd' }, child: "Players" });
+getAllPlayers().then((all) => {
+    rows += Component.render({ attr: { id: 'row' }, child: players_heading })
+    rows += Component.render({ attr: { id: "row" }, child: all });
+    document.getElementById('section').innerHTML = rows;
+});
