@@ -53,7 +53,7 @@ let displayMatches = (_matches = matches) => {
 }
 
 async function fetchPlayer(PID) {
-    return await fetch(`http://cricapi.com/api/playerStats?pid=${PID}&apikey=${API_KEY}`)
+    return await fetch(`https://cricapi.com/api/playerStats?pid=${PID}&apikey=${API_KEY}`)
         .then(res => res.json())
         .then((res) => renderPlayer(res)).catch(() => {
             document.getElementById('mhd').innerHTML = "Oops! An Error Occured while fetching data.";
