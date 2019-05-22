@@ -8,6 +8,7 @@
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
+    width: 30em;
 }
 
 #imgPlayer {
@@ -18,7 +19,6 @@
     background: blanchedalmond;
     padding: 2em;
     margin: 1em;
-    width: 500px;
     flex: 1;
 }
 
@@ -49,6 +49,7 @@
     background: rebeccapurple;
     padding: 1em;
     color: white;
+    margin: auto;
     align-self: center;
 }
 

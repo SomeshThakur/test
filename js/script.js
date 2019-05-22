@@ -31,12 +31,12 @@ let displayMatches = (_matches = matches, refresh = false) => {
         cols += col;
     }
     let morebtn = Component.render({ tag: 'button', attr: { id: 'more-btn', onclick: "allMatches()", value: "More" }, child: "More" });
+
     let row = Component.render({ attr: { id: 'row' }, child: cols + (_matches.length == 3 ? morebtn : '') });
     head_row = head_row.replace("Loading...", "Upcoming Matches");
     rows += head_row + row;
     document.getElementById('section').innerHTML = refresh ? head_row + row : rows;
 }
-
 async function fetchPlayer(PID) {
     return await fetch(`${BASE_URL}/playerStats?pid=${PID}&apikey=${API_KEY}`)
         .then(res => res.json())
