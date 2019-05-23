@@ -1,9 +1,3 @@
-
-import Sports from './app'
-
-const tt = new Sports("TT");
-tt.getName();
-
 let mactches_heading = Component.render({ tag: 'h1', attr: { style: 'margin-left:1em', id: 'mhd' }, child: "Loading..." });
 let head_row = Component.render({ attr: { id: 'row' }, child: mactches_heading });
 
