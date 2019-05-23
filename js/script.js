@@ -1,19 +1,27 @@
 
+import Sports from './app'
+
+const tt = new Sports("TT");
+tt.getName();
+
 let mactches_heading = Component.render({ tag: 'h1', attr: { style: 'margin-left:1em', id: 'mhd' }, child: "Loading..." });
 let head_row = Component.render({ attr: { id: 'row' }, child: mactches_heading });
 
 document.getElementById("section").innerHTML = head_row;
 let matches, rows = ``;
 
-fetch(`${BASE_URL}/matches?apikey=${API_KEY}`)
-    .then(res => res.json())
-    .then((res) => {
-        matches = res['matches'];
-        displayMatches(matches.slice(0, 3));
-    }).catch((err) => {
-        document.getElementById('mhd').innerHTML = "Oops! An Error Occured while fetching data.";
-    });
-
+const getMatches = async () => {
+    await fetch(`${BASE_URL}/matches?apikey=${API_KEY}`)
+        .then(res => res.json())
+        .then((res) => {
+            matches = res['matches'];
+            displayMatches(matches.slice(0, 3));
+        }).catch((err) => {
+            console.log(err);
+            document.getElementById('mhd').innerHTML = "Oops! An Error Occured while fetching data.";
+        });
+};
+getMatches();
 let allMatches = () => {
     displayMatches(matches, refresh = true);
 }
@@ -40,7 +48,8 @@ let displayMatches = (_matches = matches, refresh = false) => {
 async function fetchPlayer(PID) {
     return await fetch(`${BASE_URL}/playerStats?pid=${PID}&apikey=${API_KEY}`)
         .then(res => res.json())
-        .then((res) => renderPlayer(res)).catch(() => {
+        .then((res) => renderPlayer(res))
+        .catch(() => {
             document.getElementById('mhd').innerHTML = "Oops! An Error Occured while fetching data.";
         });
 };
