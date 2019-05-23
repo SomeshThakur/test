@@ -3,6 +3,7 @@ export class Sports {
         this.name = name;
     }
     getName() {
+        alert("Hello");
         alert(this.name);
     }
 }
