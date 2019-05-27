@@ -22,18 +22,9 @@
     flex: 1;
 }
 
-#strd {
-    background: green;
+.squad-btn {
     padding: 1em;
-    width: max-content !important;
-    color: white;
-}
-
-#nstrd {
-    background: red;
-    padding: 1em;
-    width: max-content !important;
-    color: white;
+    background-color: orange;
 }
 
 .item>p {

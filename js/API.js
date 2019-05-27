@@ -13,7 +13,8 @@ export class API {
         const resourceURL = `${this.url}/${name}`;
         endpoints.getAll = () => fetch(`${resourceURL}`, { headers: { 'apiKey': `${this.apiKey}` } })
             .then(res => res.json());
-        endpoints.getById = (uid_name = "unique_id", id) => fetch(`${resourceURL}`, { headers: { 'apiKey': `${this.apiKey}`, uid_name: id } });
+
+        endpoints.getById = (id) => fetch(`${resourceURL}?unique_id=${id}`, { headers: { 'apiKey': `${this.apiKey}` } }).then(res => res.json());
         return endpoints;
     }
 }
