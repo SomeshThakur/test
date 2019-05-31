@@ -36,6 +36,11 @@
     height: 250px;
 }
 
+.live-score {
+    border-left: 5px solid rgb(29, 240, 99);
+    padding: 10px 20px;
+}
+
 #more-btn {
     background: rebeccapurple;
     padding: 1em;

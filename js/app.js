@@ -1,7 +1,5 @@
-import { API } from './API.js';
 import { Component } from './Component.js';
 import { MatchController } from './MatchController.js'
-import { Constant } from './Constants.js'
 import { SquadController } from './SquadController.js';
 
 let $ = (selector) => {
@@ -12,29 +10,20 @@ let mactches_heading = Component.render({ tag: 'h1', attr: { style: 'margin-left
 let head_row = Component.render({ attr: { class: 'row' }, child: mactches_heading });
 
 document.getElementById("section").innerHTML = head_row;
-let matches, rows = ``;
+let rows = ``;
 
-const api = new API(Constant.BASE_URL, Constant.API_KEY);
+let matchController = new MatchController();
 let squadController = new SquadController();
-api.createEntity('matches');
-let matchController;
-api.endpoints.matches.getAll()
-    .then((res) => {
-        matches = res['matches'];
-        matchController = new MatchController(matches);
-        head_row = head_row.replace("Loading...", "Upcoming Matches");
-        rows += head_row
-        rows += matchController.getRenderedMatches(matches.slice(0, 3));
-        document.getElementById('section').innerHTML = rows
-        bindEvents();
-    })
-    .catch((err) => {
-        console.log(err);
-        document.getElementById('mhd').innerHTML = "Oops! An Error Occured while fetching data.";
-    });
-let refresh = true;
-let bindEvents = async () => {
-    if (refresh) $("#more-btn").onclick = () => { document.getElementById('section').innerHTML = head_row + matchController.getAllRenderedMatches(); refresh = false; bindEvents(); };
+
+let bindEvents = async (matches) => {
+    let more_btn = $("#more-btn");
+    if (more_btn !== null) {
+        more_btn.onclick = () => {
+            document.getElementById('section').innerHTML = head_row + matchController.getAllRenderedMatches();
+            bindEvents(matches);
+        }
+    }
+
     for (let { unique_id } of matches) {
         try {
             document.getElementById('#squad-btn-' + unique_id).onclick = () => {
@@ -51,6 +40,9 @@ let bindEvents = async () => {
                     }
                     msg += `Team 2 :\n` + names2;
                     alert(msg);
+                }).catch(err => {
+                    console.log(err)
+                    alert("Squad not available")
                 });
             }
         } catch (err) {
@@ -58,6 +50,18 @@ let bindEvents = async () => {
     }
 }
 
+let init = async () => {
+    await matchController.fetchAllMatches();
+    let row = matchController.getRenderedMatches();
+    head_row = head_row.replace("Loading...", "Matches");
+    rows += head_row
+    rows += row;
+    document.getElementById('section').innerHTML = rows;
+    bindEvents(matchController.matches);
+}
+
 let getSquad = async (id) => {
     return await squadController.getSquadById(id);
 }
+
+init();

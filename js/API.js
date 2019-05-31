@@ -14,7 +14,7 @@ export class API {
         endpoints.getAll = () => fetch(`${resourceURL}`, { headers: { 'apiKey': `${this.apiKey}` } })
             .then(res => res.json());
 
-        endpoints.getById = (id) => fetch(`${resourceURL}?unique_id=${id}`, { headers: { 'apiKey': `${this.apiKey}` } }).then(res => res.json());
+        endpoints.getById = (id, uid_name = 'unique_id') => fetch(`${resourceURL}?${uid_name}=${id}`, { headers: { 'apiKey': `${this.apiKey}` } }).then(res => res.json());
         return endpoints;
     }
 }
