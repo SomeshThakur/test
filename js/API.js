@@ -14,7 +14,11 @@ export class API {
         endpoints.getAll = () => fetch(`${resourceURL}`, { headers: { 'apiKey': `${this.apiKey}` } })
             .then(res => res.json());
 
-        endpoints.getById = (id, uid_name = 'unique_id') => fetch(`${resourceURL}?${uid_name}=${id}`, { headers: { 'apiKey': `${this.apiKey}` } }).then(res => res.json());
+        endpoints.getById = async (id, uid_name) => {
+            if (uid_name === undefined) uid_name = 'unique_id';
+            const res = await fetch(`${resourceURL}?${uid_name}=${id}`, { headers: { 'apiKey': `${this.apiKey}` } });
+            return await res.json();
+        }
         return endpoints;
     }
 }

@@ -40,7 +40,7 @@ export class MatchController {
                 scoreholder = Component.render({ tag: 'p', attr: { id: 'score-' + unique_id, class: "live-score" }, child: "Updating Score... " });
                 this.updateScore(unique_id);
             }
-            let squad = Component.render({ tag: 'button', attr: { id: '#squad-btn-' + unique_id, class: "squad-btn" }, child: "Playing Squads" });
+            let squad = Component.render({ tag: 'button', attr: { id: 'squad-btn-' + unique_id, class: "squad-btn" }, child: "Playing Squads" });
             let item = Component.render({ attr: { class: 'item' }, child: vs + scoreholder + rdate + squad });
             let col = Component.render({ attr: { class: 'col' }, child: item });
             cols += col;
