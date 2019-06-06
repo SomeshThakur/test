@@ -20,7 +20,7 @@ let playingSquadController = new PlayingSquadController();
 let playerController = new PlayerController();
 
 const bindPlayerStatBtnEvent = (players) => {
-    for (let { pid } of players) {
+    players.forEach(({ pid }) => {
         let view_stat_btn = $(`#view-stat-${pid}`);
         if (view_stat_btn !== null) {
             view_stat_btn.addEventListener('click', () => {
@@ -32,7 +32,7 @@ const bindPlayerStatBtnEvent = (players) => {
                 })
             });
         }
-    }
+    });
 }
 
 const bindPlayingSquadBtnEvent = async (matches) => {
@@ -43,8 +43,7 @@ const bindPlayingSquadBtnEvent = async (matches) => {
             bindPlayingSquadBtnEvent(matches);
         });
     }
-
-    for (let { unique_id } of matches) {
+    matches.forEach(({ unique_id }) => {
         let squad_btn = $(`#squad-btn-${unique_id}`)
         if (squad_btn !== null) {
             squad_btn.addEventListener('click', () => {
@@ -63,7 +62,7 @@ const bindPlayingSquadBtnEvent = async (matches) => {
                 });
             });
         }
-    }
+    });
 }
 const init = async () => {
     await matchController.fetchAllMatches();
