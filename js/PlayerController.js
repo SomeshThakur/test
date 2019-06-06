@@ -3,7 +3,7 @@ import { Constant } from "./Constants.js";
 import { Component } from './Component.js'
 export class PlayerController {
     constructor() {
-        this.api = new API(Constant.BASE_URL, Constant.API_KEY);
+        this.api = API.getInstance(Constant.BASE_URL, Constant.API_KEY);
         this.api.createEntity('playerStats');
     }
     async getPlayerStatById(id) {

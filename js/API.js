@@ -4,6 +4,12 @@ export class API {
         this.apiKey = key;
         this.endpoints = {}
     }
+    static getInstance(url, key) {
+        if (this.instance === undefined) {
+            this.instance = new API(url, key);
+        }
+        return this.instance;
+    }
     createEntity(enity) {
         this.endpoints[enity] = this.createCRUDEndpoints(enity);
     }

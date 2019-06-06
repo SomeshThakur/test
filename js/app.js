@@ -19,35 +19,34 @@ let squadController = new SquadController();
 let playingSquadController = new PlayingSquadController();
 let playerController = new PlayerController();
 
-const bindPlayerStatBtnEvent = (squad) => {
-    for (let { pid, name } of squad[0].players) {
+const bindPlayerStatBtnEvent = (players) => {
+    players.forEach(({ pid }) => {
         let view_stat_btn = $(`#view-stat-${pid}`);
         if (view_stat_btn !== null) {
-            view_stat_btn.onclick = () => {
+            view_stat_btn.addEventListener('click', () => {
                 playerController.getRenderedPlayer(pid).then(res => {
                     head_row = head_row.replace("Matches", "Player Full Stats")
                     rows = head_row;
                     rows += res;
                     document.getElementById('section').innerHTML = rows;
                 })
-            }
+            });
         }
-    }
+    });
 }
 
 const bindPlayingSquadBtnEvent = async (matches) => {
     let more_btn = $("#more-btn");
     if (more_btn !== null) {
-        more_btn.onclick = () => {
+        more_btn.addEventListener('click', () => {
             document.getElementById('section').innerHTML = head_row + matchController.getAllRenderedMatches();
             bindPlayingSquadBtnEvent(matches);
-        }
+        });
     }
-
-    for (let { unique_id } of matches) {
+    matches.forEach(({ unique_id }) => {
         let squad_btn = $(`#squad-btn-${unique_id}`)
         if (squad_btn !== null) {
-            squad_btn.onclick = () => {
+            squad_btn.addEventListener('click', () => {
                 getSquad(unique_id).then(res => {
                     if (res.squad !== undefined) {
                         rows = head_row.replace("Matches", "Loading All Players info");
@@ -55,16 +54,16 @@ const bindPlayingSquadBtnEvent = async (matches) => {
                         rows = head_row.replace("Loading All Players info", "Playing 11 for 2 Teams ");
                         rows += playingSquadController.getAllRenderedPlayers(res.squad);
                         document.getElementById('section').innerHTML = rows;
-                        bindPlayerStatBtnEvent(res.squad);
+                        bindPlayerStatBtnEvent(res.squad[0].players);
+                        bindPlayerStatBtnEvent(res.squad[1].players);
                     } else {
                         alert("Squad not available");
                     }
                 });
-            }
+            });
         }
-    }
+    });
 }
-
 const init = async () => {
     await matchController.fetchAllMatches();
     let row = matchController.getRenderedMatches();
