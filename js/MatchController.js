@@ -4,7 +4,7 @@ import { API } from './API.js'
 import { Constant } from './Constants.js'
 export class MatchController {
     constructor() {
-        this.api = new API(Constant.BASE_URL, Constant.API_KEY);
+        this.api = API.getInstance(Constant.BASE_URL, Constant.API_KEY);
         this.api.createEntity('matches');
         this.rows = ``;
         this.liveScoreController = new LiveScoreController();
@@ -30,8 +30,7 @@ export class MatchController {
         if (!refresh) _matches = this.matches.slice(0, 3)
         else _matches = this.matches;
         let cols = ``;
-        //  let unique_id, date, matchStarted, teams;
-        for (let { unique_id, date, matchStarted, ...teams } of _matches) {
+        _matches.forEach(({ unique_id, date, matchStarted, ...teams }) => {
             let scoreholder = ``;
             let vs = Component.render({ tag: 'h1', attr: { id: 'match-' + unique_id }, child: ` ${teams['team-1']} vs ${teams['team-2']}` });
             let jsdate = new Date(date);
@@ -44,7 +43,8 @@ export class MatchController {
             let item = Component.render({ attr: { class: 'item' }, child: vs + scoreholder + rdate + squad });
             let col = Component.render({ attr: { class: 'col' }, child: item });
             cols += col;
-        }
+        });
+
         let morebtn = Component.render({ tag: 'button', attr: { id: 'more-btn', value: "More" }, child: "More" });
         let row = Component.render({ attr: { class: 'row' }, child: cols + (_matches.length == 3 ? morebtn : '') });
         return row;
