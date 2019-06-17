@@ -1,8 +1,9 @@
-import { Component } from './Component.js';
-import { MatchController } from './MatchController.js'
-import { SquadController } from './SquadController.js';
-import { PlayingSquadController } from './PlayingSquadController.js'
-import { PlayerController } from './PlayerController.js';
+import { Component } from './js/Component.js';
+import { MatchController } from './js/MatchController.js'
+import { SquadController } from './js/SquadController.js';
+import { PlayingSquadController } from './js/PlayingSquadController.js'
+import { PlayerController } from './js/PlayerController.js';
+import './styles/style.css';
 
 const $ = (selector) => {
     return document.querySelector(selector);
