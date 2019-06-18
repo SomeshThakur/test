@@ -25,7 +25,7 @@ module.exports = {
             },
             {
 
-                test: /\.css$/,
+                test: /\.scss$/,
                 use: [
                     // style-loader
                     { loader: 'style-loader' },
@@ -52,5 +52,14 @@ module.exports = {
     output: {
         filename: 'bundle.js',
         path: __dirname + '/dist'
+    },
+    devServer: {
+        proxy: {
+            "/": {
+
+                target: "http://127.0.0.1:8000/",
+                changeOrigin: true,
+            }
+        }
     }
 }

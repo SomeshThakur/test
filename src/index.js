@@ -3,7 +3,7 @@ import { MatchController } from './js/MatchController.js'
 import { SquadController } from './js/SquadController.js';
 import { PlayingSquadController } from './js/PlayingSquadController.js'
 import { PlayerController } from './js/PlayerController.js';
-import './styles/style.css';
+import './styles/style.scss';
 
 const $ = (selector) => {
     return document.querySelector(selector);
